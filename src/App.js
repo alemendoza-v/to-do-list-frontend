@@ -1,23 +1,44 @@
-import logo from './logo.svg';
+import ToDoForm from './components/ToDoForm';
+import ToDoTable from './components/ToDoTable';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const [toDos, setToDos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+
+    // fetch('/todos')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setToDos(data);
+    //     setLoading(false);
+    //   })
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="body-container">
+      <div className="inv-container">
+        <div>
+          <ToDoForm />
+        </div>        
+        <div className="new-button">
+        </div>
+        <div className="to-do-container">
+          <ToDoTable />
+        </div>
+        <div className="pagination-container">
+        </div>
+        <div className="metrics-container">
+        </div>
+      </div>
     </div>
   );
 }
