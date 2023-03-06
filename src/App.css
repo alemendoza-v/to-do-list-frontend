@@ -10,6 +10,15 @@
 }
 
 .new-button {
+  margin-bottom: 10px;
+}
+
+.new-button input[type=button] {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
 }
 
 .to-do-container {

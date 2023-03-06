@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import '../Form.css';
 
-const ToDoForm = () => {
+const ToDoSearchForm = () => {
     const [form, setForm] = useState({
-        name: "",
+        text: "",
         priority: 0,
         status: 0
     });
@@ -17,14 +17,14 @@ const ToDoForm = () => {
         })
     };
 
-    const handeSubmit = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         console.log(form);
     }
 
     return(
         <div className="search-container">
-            <form onSubmit={handeSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="form-label">
                         <label>Name</label>
@@ -72,4 +72,4 @@ const ToDoForm = () => {
     )
 }
 
-export default ToDoForm;
+export default ToDoSearchForm;

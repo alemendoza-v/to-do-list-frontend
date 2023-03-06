@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import ToDo from './ToDo';
 
 const ToDoTable = () => {
     const [toDos, setToDos] = useState([]);
@@ -23,13 +24,8 @@ const ToDoTable = () => {
     const renderTableRows = () => {
         return toDos.map(toDo => {
             return (
-                <tr key={toDo.id}>
-                    <td>{toDo.isDone}</td>
-                    <td>{toDo.text}</td>
-                    <td>{toDo.priority}</td>
-                    <td>{toDo.dueDate}</td>
-                    <td><a>Update</a><a>Delete</a></td>
-                </tr>
+                <ToDo key={toDo.id}
+                toDo={toDo}/>
             )
         })
     }

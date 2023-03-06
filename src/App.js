@@ -1,22 +1,23 @@
-import ToDoForm from './components/ToDoForm';
+import ToDoSearchForm from './components/ToDoSearchForm';
 import ToDoTable from './components/ToDoTable';
+import ToDoModal from './components/ToDoModal';
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const App = () => {
-
-  const [toDos, setToDos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleHideModal = () => {
+    setShowModal(false);
+  };
 
   useEffect(() => {
     setLoading(false);
-
-    // fetch('/todos')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setToDos(data);
-    //     setLoading(false);
-    //   })
   }, []);
 
   if (loading) {
@@ -27,9 +28,11 @@ const App = () => {
     <div className="body-container">
       <div className="inv-container">
         <div>
-          <ToDoForm />
+          <ToDoSearchForm />
         </div>        
         <div className="new-button">
+          <ToDoModal show={showModal} handleClose={handleHideModal}/>
+          <input type="button" value="+ New To Do" onClick={handleShowModal}></input>
         </div>
         <div className="to-do-container">
           <ToDoTable />

@@ -26,7 +26,12 @@
     width: 8%;
 }
 
-.form-label label {
+.create-form-label {
+    float: left;
+    width: 10%;
+}
+
+.form-label, .create-form-label label {
     padding: 12px 12px 12px 0;
     display: inline-block;
 }
@@ -34,6 +39,12 @@
 .form-input {
     float: left;
     width: 92%;
+    margin-top: 8px;
+}
+
+.create-form-input {
+    float: left;
+    width: 90%;
     margin-top: 8px;
 }
   
@@ -49,12 +60,25 @@
     padding: 6px;
     border: 1px solid black;
 }
+
+.create-priority-form-input {
+    width: 20.8%;
+    padding: 6px;
+    border: 1px solid black;
+}
   
-.submit-btn {
-    float: right;
+.submit-btn, .create-btn {
     padding-top: 6px;
     padding-bottom: 6px;
     padding-left: 20px;
     padding-right: 20px;
     font-weight: bold;
+}
+
+.submit-btn {
+    float: right;
+}
+
+.create-btn {
+    float: left;
 }
