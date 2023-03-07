@@ -73,6 +73,7 @@
     padding-left: 20px;
     padding-right: 20px;
     font-weight: bold;
+    border: 1px solid black;
 }
 
 .submit-btn {
@@ -81,4 +82,8 @@
 
 .create-btn {
     float: left;
+}
+
+.submit-btn, .create-btn:hover {
+    cursor: pointer;
 }

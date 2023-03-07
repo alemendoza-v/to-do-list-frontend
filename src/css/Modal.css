@@ -34,3 +34,7 @@
     top: 5%;
     right: 1%;
 }  
+
+.close-btn:hover {
+    cursor: pointer;
+}

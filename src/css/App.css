@@ -19,6 +19,11 @@
   padding-left: 10px;
   padding-right: 10px;
   font-weight: bold;
+  border: 1px solid black;
+}
+
+.new-button input[type=button]:hover {
+  cursor: pointer;
 }
 
 .to-do-container {

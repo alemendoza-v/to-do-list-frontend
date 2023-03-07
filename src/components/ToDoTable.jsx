@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import ToDo from './ToDo';
+import ToDosContext from '../ToDosContext';
+import '../css/Table.css'
 
 const ToDoTable = () => {
-    const [toDos, setToDos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { toDos, setToDos } = useContext(ToDosContext);
 
     useEffect(() => {
         fetch('/todos')
@@ -36,14 +39,26 @@ const ToDoTable = () => {
 
     return toDos.length > 0 
     ? (
-        <table>
+        <table className="to-do-table">
             <thead>
                 <tr>
-                    <th>Done</th>
-                    <th>Name</th>
-                    <th>Priority</th>
-                    <th>Due Date</th>
-                    <th>Actions</th>
+                    <th className="table-done">Done</th>
+                    <th className="table-name">Name</th>
+                    <th className="table-priority">
+                        Priority 
+                        <div className="arrows">
+                            <div className="up-arrow"></div>
+                            <div className="down-arrow"></div>
+                        </div>
+                    </th>
+                    <th className="table-due-date">
+                        Due Date 
+                        <div className="arrows">
+                                <div className="up-arrow"></div>
+                                <div className="down-arrow"></div>
+                        </div>
+                    </th>
+                    <th className="table-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +66,7 @@ const ToDoTable = () => {
             </tbody>
         </table>
     ) : (
-        <div> No to dos found</div>
+        <div> No to dos found </div>
     )
 }
 

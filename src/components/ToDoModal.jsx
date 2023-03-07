@@ -1,5 +1,5 @@
 import ToDoCreateForm from './ToDoCreateForm';
-import '../Modal.css';
+import '../css/Modal.css';
 
 const ToDoModal = (props) => {
     const showHideClassName = props.show ? "modal display-block" : "modal display-none";

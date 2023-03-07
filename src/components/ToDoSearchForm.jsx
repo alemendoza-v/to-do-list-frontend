@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import '../Form.css';
+import { useContext, useState } from 'react';
+import ToDosContext from '../ToDosContext';
+import '../css/Form.css';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -7,6 +8,8 @@ const ToDoSearchForm = () => {
         priority: 0,
         status: 0
     });
+
+    const { toDos, setToDos } = useContext(ToDosContext);
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -20,6 +23,43 @@ const ToDoSearchForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(form);
+        
+        let url = '/todos?filter_by=';
+        if(form.text) {
+            url += 'text,';
+        }
+        if(form.priority) {
+            url += 'priority,';
+        }
+        if(form.status === 'done') {
+            url += 'done';
+        } else if (form.status === 'undone') {
+            url += 'undone';
+        }
+
+        if(form.text) {
+            url += `&text=${encodeURIComponent(form.text)}`;
+        }
+
+        if(form.priority) {
+            url += `&priority=${encodeURIComponent(form.priority)}`;
+        }
+
+        console.log(url);
+        fetch(url)
+        .then((result) => result.json())
+        .then(
+            (result) => {
+                const data = result.data;
+                console.log(toDos);
+                setToDos(data);
+                // setIsLoading(false);
+            },
+            (error) =>  {
+                console.log('There was an error fetching the data');
+                // setIsLoading(false);
+            }
+        )
     }
 
     return(
@@ -30,7 +70,7 @@ const ToDoSearchForm = () => {
                         <label>Name</label>
                     </div>
                     <div className="form-input">
-                        <input className="name-form-input" type="text" name="name" onChange={handleInputChange} />
+                        <input className="name-form-input" type="text" name="text" onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="row">

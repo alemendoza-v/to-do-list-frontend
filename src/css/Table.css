@@ -1,0 +1,104 @@
+.to-do-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-done {
+    width: 5%;
+    padding: 10px;
+    background-color: rgb(169, 165, 165);
+    border: 1px solid black;
+}
+
+.table-name {
+    width: 25%;
+    padding: 10px;
+    background-color: rgb(169, 165, 165);
+    border: 1px solid black;
+}
+
+.table-priority {
+    width: 20%;
+    padding: 10px;
+    background-color: rgb(169, 165, 165);
+    border: 1px solid black;
+}
+
+.table-due-date {
+    width: 20%;
+    padding: 10px;
+    background-color: rgb(169, 165, 165);
+    border: 1px solid black;
+}
+
+.table-actions {
+    width: 20%;
+    padding: 10px;
+    background-color: rgb(169, 165, 165);
+    border: 1px solid black;
+}
+
+.to-do-checkbox {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.to-do-text {
+    padding: 10px;
+    border: 1px solid black;
+
+}
+
+.to-do-priority {
+    padding: 10px;
+    border: 1px solid black;
+
+}
+
+.to-do-due-date {
+    padding: 10px;
+    border: 1px solid black;
+
+}
+
+.to-do-actions {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.arrows {
+    float: right;
+}
+
+.up-arrow {
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    background: transparent;
+    border-bottom: solid 7px black;
+    border-top-width: 0;
+    cursor: pointer;
+}
+
+.down-arrow {
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    background: transparent;
+    border-top: solid 7px black;
+    border-bottom-width: 0;
+    margin-top:3px;
+    cursor: pointer;
+}
+
+.action-btn {
+    font-size: 16px;
+    border: none;
+    background: none;
+}
+
+.action-btn:hover {
+    cursor: pointer;
+}
