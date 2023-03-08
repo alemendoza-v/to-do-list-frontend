@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import '../css/Form.css';
 import "react-datepicker/dist/react-datepicker.css";
+import ToDoContext from '../ToDoContext';
 
-const ToDoCreateForm = (props) => {
+const ToDoUpdateForm = (props) => {
+    const { toDo } = useContext(ToDoContext);
+
     const [form, setForm] = useState({
-        text: "",
-        priority: 3,
-        dueDate: ""
+        text: toDo.text,
+        priority: toDo.priority,
+        dueDate: toDo.dueDate
     });
 
-    const [startDate, setStartDate] = useState(null);
+    const getDueDate = () => {
+        if (toDo.dueDate) {
+            return new Date(toDo.dueDate.replace("-", '/'));
+        } else {
+            return null;
+        }
+    }
+
+    const [startDate, setStartDate] = useState(getDueDate());
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -22,20 +33,24 @@ const ToDoCreateForm = (props) => {
     };
 
     const handleDateChange = (date) => {
+        console.log(toDo.dueDate.split("-").reverse().join("-"));
+        console.log(startDate);
+        console.log(date);
         setStartDate(date);
         setForm((prev) => {
             return {...prev, 'dueDate': date.toISOString().substring(0, 10)}
         })
+        console.log(form.dueDate);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const requestOptions = {
-            method: 'POST',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
         };
-        fetch('/todos', requestOptions)
+        fetch(`/todos/${toDo.id}`, requestOptions)
         .then(response => response.json());
     }
 
@@ -46,7 +61,7 @@ const ToDoCreateForm = (props) => {
                     <label>Name</label>
                 </div>
                 <div className="create-form-input">
-                    <input className="name-form-input" type="text" name="text" onChange={handleInputChange} />
+                    <input className="name-form-input" type="text" name="text" onChange={handleInputChange} value={form.text}/>
                 </div>
             </div>
             <div className="row">
@@ -58,6 +73,7 @@ const ToDoCreateForm = (props) => {
                         className="create-priority-form-input"
                         name="priority" 
                         onChange={handleInputChange}
+                        value={form.priority}
                     >
                         <option value="3">High</option>
                         <option value="2">Medium</option>
@@ -73,9 +89,9 @@ const ToDoCreateForm = (props) => {
                     <ReactDatePicker selected={startDate} onChange={(date) => handleDateChange(date)}/>
                 </div>
             </div>
-            <input className="create-btn" type="submit" value="Create" onClick={props.handleClose}></input>
+            <input className="create-btn" type="submit" value="Update" onClick={props.handleClose}></input>
         </form>           
     )
 }
 
-export default ToDoCreateForm;
+export default ToDoUpdateForm;

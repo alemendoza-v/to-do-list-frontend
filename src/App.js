@@ -42,7 +42,7 @@ const App = () => {
             <input type="button" value="+ New To Do" onClick={handleShowModal}></input>
           </div>
           <div className="to-do-container">
-            <ToDoTable />
+            <ToDoTable/>
           </div>
           <div className="pagination-container">
           </div>

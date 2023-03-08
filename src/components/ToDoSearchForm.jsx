@@ -22,7 +22,6 @@ const ToDoSearchForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(form);
         
         let url = '/todos?filter_by=';
         if(form.text) {
@@ -45,13 +44,11 @@ const ToDoSearchForm = () => {
             url += `&priority=${encodeURIComponent(form.priority)}`;
         }
 
-        console.log(url);
         fetch(url)
         .then((result) => result.json())
         .then(
             (result) => {
                 const data = result.data;
-                console.log(toDos);
                 setToDos(data);
                 // setIsLoading(false);
             },
