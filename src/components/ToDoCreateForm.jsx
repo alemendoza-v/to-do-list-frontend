@@ -18,7 +18,7 @@ const ToDoCreateForm = (props) => {
     
         setForm((prev) => {
             return {...prev, [name]: value}
-        })
+        });
     };
 
     const handleDateChange = (date) => {

@@ -33,14 +33,10 @@ const ToDoUpdateForm = (props) => {
     };
 
     const handleDateChange = (date) => {
-        console.log(toDo.dueDate.split("-").reverse().join("-"));
-        console.log(startDate);
-        console.log(date);
         setStartDate(date);
         setForm((prev) => {
             return {...prev, 'dueDate': date.toISOString().substring(0, 10)}
         })
-        console.log(form.dueDate);
     }
 
     const handleSubmit = (event) => {

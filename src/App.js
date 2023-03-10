@@ -2,14 +2,16 @@ import ToDoSearchForm from './components/ToDoSearchForm';
 import ToDoTable from './components/ToDoTable';
 import ToDoModal from './components/ToDoModal';
 import ToDosContext from './ToDosContext';
-import React, { useEffect, useState } from 'react';
+import UrlContext from './UrlContext';
+import React, { useState } from 'react';
 import './css/App.css';
 
 const App = () => {
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [toDos, setToDos] = useState([]);
-  const value = { toDos, setToDos };
+  const toDosValue = { toDos, setToDos };
+  const [url, setUrl]  = useState('/todos');
+  const urlValue = { url, setUrl };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -22,18 +24,11 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <div className="body-container">
       <div className="inv-container">
-        <ToDosContext.Provider value={value}>
+        <UrlContext.Provider value={urlValue}>
+        <ToDosContext.Provider value={toDosValue}>
           <>
             <ToDoSearchForm />
           </>        
@@ -49,6 +44,7 @@ const App = () => {
           <div className="metrics-container">
           </div>
         </ToDosContext.Provider>
+        </UrlContext.Provider>
       </div>
     </div>
   );

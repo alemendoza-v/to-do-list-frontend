@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import ToDosContext from '../ToDosContext';
 import '../css/Form.css';
+import UrlContext from '../UrlContext';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -9,7 +10,8 @@ const ToDoSearchForm = () => {
         status: 0
     });
 
-    const { toDos, setToDos } = useContext(ToDosContext);
+    const { setToDos } = useContext(ToDosContext);
+    const { setUrl } = useContext(UrlContext);
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -44,12 +46,18 @@ const ToDoSearchForm = () => {
             url += `&priority=${encodeURIComponent(form.priority)}`;
         }
 
+        if(url === '/todos?filter_by=') {
+            url = '/todos';
+        }
+
         fetch(url)
         .then((result) => result.json())
         .then(
             (result) => {
                 const data = result.data;
                 setToDos(data);
+                setUrl(url);
+                console.log(url);
                 // setIsLoading(false);
             },
             (error) =>  {
