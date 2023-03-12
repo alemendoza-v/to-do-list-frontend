@@ -2,6 +2,8 @@ import { useContext, useState } from 'react';
 import ToDosContext from '../ToDosContext';
 import '../css/Form.css';
 import UrlContext from '../UrlContext';
+import PrevContext from '../PrevContext';
+import NextContext from '../NextContext';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -12,6 +14,8 @@ const ToDoSearchForm = () => {
 
     const { setToDos } = useContext(ToDosContext);
     const { setUrl } = useContext(UrlContext);
+    const { prev, setPrev } = useContext(PrevContext);
+    const { next, setNext } = useContext(NextContext);
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -21,6 +25,28 @@ const ToDoSearchForm = () => {
             return {...prev, [name]: value}
         })
     };
+
+    const fetchFiltered = (url) => {
+        fetch(url)
+        .then((result) => result.json())
+        .then(
+            (result) => {
+                const data = result.data;
+                setToDos(data);
+                setUrl(url);
+                console.log(url);
+                console.log(result);
+                setPrev(result.prev);
+                setNext(result.next);
+                console.log(next);
+                // setIsLoading(false);
+            },
+            (error) =>  {
+                console.log('There was an error fetching the data');
+                // setIsLoading(false);
+            }
+        )
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -49,22 +75,7 @@ const ToDoSearchForm = () => {
         if(url === '/todos?filter_by=') {
             url = '/todos';
         }
-
-        fetch(url)
-        .then((result) => result.json())
-        .then(
-            (result) => {
-                const data = result.data;
-                setToDos(data);
-                setUrl(url);
-                console.log(url);
-                // setIsLoading(false);
-            },
-            (error) =>  {
-                console.log('There was an error fetching the data');
-                // setIsLoading(false);
-            }
-        )
+        fetchFiltered(url);
     }
 
     return(

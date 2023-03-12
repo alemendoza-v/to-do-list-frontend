@@ -5,6 +5,8 @@ import ToDoUpdateModal from "./ToDoUpdateModal";
 import ToDoContext from "../ToDoContext";
 import '../css/Table.css'
 import UrlContext from "../UrlContext";
+import PrevContext from "../PrevContext";
+import NextContext from "../NextContext";
 
 const ToDoTable = () => {
     const [showModal, setShowModal] = useState(false);
@@ -21,6 +23,8 @@ const ToDoTable = () => {
         dueDateDown: false,
     })
     const { url } = useContext(UrlContext);
+    const { prev, setPrev } = useContext(PrevContext);
+    const { next, setNext } = useContext(NextContext);
 
     useEffect(() => {
         fetch('/todos')
@@ -29,8 +33,15 @@ const ToDoTable = () => {
             (result) => {
                 const toDos = result.data;
                 setToDos(toDos);
+                setPrev(result.prev);
+                setNext(result.next);
+                console.log(prev);
+                console.log(next);
+            },
+            (error) => {
+                console.log('There was an error');
             })
-    },[setToDos])
+    },[])
         
     const handleShowModal = () => {
         setShowModal(true);
@@ -66,22 +77,22 @@ const ToDoTable = () => {
             (result => {
                 const data = result.data;
                 setToDos(data);
+                setPrev(result.prev);
+                setNext(result.next);
             })
         )
     }
 
     useEffect(() => {
-        console.log(sortBy);
-        console.log(orderBy);
         let newUrl;
 
         if (sortBy.length > 0 && orderBy.length > 0) {
             if (url === '/todos') {
-                newUrl = url + '?sort_by=' + sortBy.join(',') + '&order_by=' + orderBy.join(',');
+                newUrl = '?sort_by=' + sortBy.join(',') + '&order_by=' + orderBy.join(',');
             } else {
-                newUrl = url + '&sort_by=' + sortBy.join(',') + '&order_by=' + orderBy.join(',');
+                newUrl = '&sort_by=' + sortBy.join(',') + '&order_by=' + orderBy.join(',');
             }
-            fetchSorted(newUrl);
+            fetchSorted(url + newUrl);
         }
     }, [sortBy, orderBy])
 

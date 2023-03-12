@@ -31,7 +31,11 @@
 }
 
 .pagination-container {
+  margin: 10px auto;
   border: 1px solid black;
+  padding: 20px;
+  text-align: center;
+  width: 50%;
 }
 
 .metrics-container {

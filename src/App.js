@@ -1,8 +1,11 @@
 import ToDoSearchForm from './components/ToDoSearchForm';
 import ToDoTable from './components/ToDoTable';
 import ToDoModal from './components/ToDoModal';
+import ToDoPagination from './components/ToDoPagination';
 import ToDosContext from './ToDosContext';
 import UrlContext from './UrlContext';
+import NextContext from './NextContext';
+import PrevContext from './PrevContext';
 import React, { useState } from 'react';
 import './css/App.css';
 
@@ -10,8 +13,12 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [toDos, setToDos] = useState([]);
   const toDosValue = { toDos, setToDos };
-  const [url, setUrl]  = useState('/todos');
+  const [url, setUrl] = useState('/todos');
   const urlValue = { url, setUrl };
+  const [prev, setPrev] = useState(null);
+  const prevValue = { prev, setPrev };
+  const [next, setNext] = useState(null);
+  const nextValue = { next, setNext };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -27,8 +34,10 @@ const App = () => {
   return (
     <div className="body-container">
       <div className="inv-container">
-        <UrlContext.Provider value={urlValue}>
         <ToDosContext.Provider value={toDosValue}>
+        <UrlContext.Provider value={urlValue}>
+        <NextContext.Provider value={nextValue}>
+        <PrevContext.Provider value={prevValue}>
           <>
             <ToDoSearchForm />
           </>        
@@ -40,11 +49,14 @@ const App = () => {
             <ToDoTable/>
           </div>
           <div className="pagination-container">
+            <ToDoPagination/>
           </div>
           <div className="metrics-container">
           </div>
-        </ToDosContext.Provider>
+        </PrevContext.Provider>
+        </NextContext.Provider>
         </UrlContext.Provider>
+        </ToDosContext.Provider>
       </div>
     </div>
   );
