@@ -14,7 +14,7 @@ const ToDoUpdateModal = (props) => {
             <div className={showHideClassName}>
                 <section className="modal-main">
                     <ToDoUpdateForm handleClose={props.handleClose}/>
-                    <button className="close-btn" onClick={props.handleClose}>X</button>
+                    <button className="close-btn" id="close" onClick={props.handleClose}>X</button>
                 </section>
             </div>
         ) 

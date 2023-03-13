@@ -7,6 +7,8 @@ import '../css/Table.css'
 import UrlContext from "../UrlContext";
 import PrevContext from "../PrevContext";
 import NextContext from "../NextContext";
+import CurrentPageContext from "../CurrentPageContext";
+import PagesContext from "../PagesContext";
 
 const ToDoTable = () => {
     const [showModal, setShowModal] = useState(false);
@@ -23,8 +25,10 @@ const ToDoTable = () => {
         dueDateDown: false,
     })
     const { url } = useContext(UrlContext);
-    const { prev, setPrev } = useContext(PrevContext);
-    const { next, setNext } = useContext(NextContext);
+    const { setPrev } = useContext(PrevContext);
+    const { setNext } = useContext(NextContext);
+    const { setCurrentPage } = useContext(CurrentPageContext);
+    const { setPages } = useContext(PagesContext);
 
     useEffect(() => {
         fetch('/todos')
@@ -32,11 +36,23 @@ const ToDoTable = () => {
         .then(
             (result) => {
                 const toDos = result.data;
+                const p = result.prev;
+                const n = result.next;
                 setToDos(toDos);
-                setPrev(result.prev);
-                setNext(result.next);
-                console.log(prev);
-                console.log(next);
+                setPrev(p);
+                setNext(n);
+                if (!p) {
+                    setCurrentPage(1);
+                    setPages(prev => [...prev, 1]);
+                }
+                if (n) {
+                    let nextPage = parseInt(n.charAt(n.length - 1));
+                    if (p) {
+                        setCurrentPage(nextPage);
+                    }
+                    console.log('adding next page');
+                    setPages(prev => [...prev, nextPage + 1]);
+                } 
             },
             (error) => {
                 console.log('There was an error');
@@ -47,9 +63,9 @@ const ToDoTable = () => {
         setShowModal(true);
     };
     
-    const handleHideModal = (created) => {
+    const handleHideModal = (event) => {
         setShowModal(false);
-        if(created) {
+        if(event.target.id === "update") {
             window.location.reload(false);
         }
     };

@@ -14,7 +14,7 @@ const ToDoCheckbox = (props) => {
             .then(response => response.json());
         } else {
             const requestOptions = {
-                method: 'PUT',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             };
             fetch(`/todos/${props.toDo.id}/undone`, requestOptions)

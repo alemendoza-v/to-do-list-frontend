@@ -6,6 +6,8 @@ import ToDosContext from './ToDosContext';
 import UrlContext from './UrlContext';
 import NextContext from './NextContext';
 import PrevContext from './PrevContext';
+import CurrentPageContext from './CurrentPageContext';
+import PagesContext from './PagesContext';
 import React, { useState } from 'react';
 import './css/App.css';
 
@@ -19,14 +21,18 @@ const App = () => {
   const prevValue = { prev, setPrev };
   const [next, setNext] = useState(null);
   const nextValue = { next, setNext };
+  const [currentPage, setCurrentPage] = useState(null);
+  const currentPageValue = { currentPage, setCurrentPage };
+  const [pages, setPages] = useState([]);
+  const pagesValue = { pages, setPages };
 
   const handleShowModal = () => {
     setShowModal(true);
   };
 
-  const handleHideModal = (created) => {
+  const handleHideModal = (event) => {
     setShowModal(false);
-    if(created) {
+    if(event.target.id === 'create') {
       window.location.reload(false);
     }
   };
@@ -38,6 +44,8 @@ const App = () => {
         <UrlContext.Provider value={urlValue}>
         <NextContext.Provider value={nextValue}>
         <PrevContext.Provider value={prevValue}>
+        <CurrentPageContext.Provider value={currentPageValue}>
+        <PagesContext.Provider value={pagesValue}>
           <>
             <ToDoSearchForm />
           </>        
@@ -53,6 +61,8 @@ const App = () => {
           </div>
           <div className="metrics-container">
           </div>
+        </PagesContext.Provider>
+        </CurrentPageContext.Provider>
         </PrevContext.Provider>
         </NextContext.Provider>
         </UrlContext.Provider>

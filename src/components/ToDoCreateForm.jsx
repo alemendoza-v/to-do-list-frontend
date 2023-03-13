@@ -73,7 +73,7 @@ const ToDoCreateForm = (props) => {
                     <ReactDatePicker selected={startDate} onChange={(date) => handleDateChange(date)}/>
                 </div>
             </div>
-            <input className="create-btn" type="submit" value="Create" onClick={props.handleClose}></input>
+            <input className="create-btn" type="submit" value="Create" id="create" onClick={props.handleClose}></input>
         </form>           
     )
 }

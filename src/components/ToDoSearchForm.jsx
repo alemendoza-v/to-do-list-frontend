@@ -4,6 +4,8 @@ import '../css/Form.css';
 import UrlContext from '../UrlContext';
 import PrevContext from '../PrevContext';
 import NextContext from '../NextContext';
+import CurrentPageContext from '../CurrentPageContext';
+import PagesContext from '../PagesContext';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -14,8 +16,10 @@ const ToDoSearchForm = () => {
 
     const { setToDos } = useContext(ToDosContext);
     const { setUrl } = useContext(UrlContext);
-    const { prev, setPrev } = useContext(PrevContext);
-    const { next, setNext } = useContext(NextContext);
+    const { setPrev } = useContext(PrevContext);
+    const { setNext } = useContext(NextContext);
+    const { setCurrentPage } = useContext(CurrentPageContext);
+    const { setPages } = useContext(PagesContext);
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -32,18 +36,28 @@ const ToDoSearchForm = () => {
         .then(
             (result) => {
                 const data = result.data;
+                const p = result.prev;
+                const n = result.next;
                 setToDos(data);
                 setUrl(url);
-                console.log(url);
-                console.log(result);
-                setPrev(result.prev);
-                setNext(result.next);
-                console.log(next);
-                // setIsLoading(false);
+                setPrev(p);
+                setNext(n);
+                setPages([]);
+                if (!p) {
+                    setCurrentPage(1);
+                    setPages(prev => [...prev, 1]);
+                }
+                if (n) {
+                    let nextPage = parseInt(n.charAt(n.length - 1));
+                    if (p) {
+                        setCurrentPage(nextPage);
+                    }
+                    console.log('adding next page');
+                    setPages(prev => [...prev, nextPage + 1]);
+                } 
             },
             (error) =>  {
                 console.log('There was an error fetching the data');
-                // setIsLoading(false);
             }
         )
     }
