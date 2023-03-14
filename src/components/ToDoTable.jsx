@@ -50,7 +50,6 @@ const ToDoTable = () => {
                     if (p) {
                         setCurrentPage(nextPage);
                     }
-                    console.log('adding next page');
                     setPages(prev => [...prev, nextPage + 1]);
                 } 
             },
@@ -167,10 +166,10 @@ const ToDoTable = () => {
                 <table className="to-do-table">
                     <thead>
                         <tr>
-                            <th className="table-done">Done</th>
-                            <th className="table-name">Name</th>
+                            <th className="table-done">DONE</th>
+                            <th className="table-name">NAME</th>
                             <th className="table-priority">
-                                Priority 
+                                PRIORITY 
                                 <div className="arrows">
                                     <div className="up-arrow up-black" id="priorityUp" onClick={
                                         () => { 
@@ -194,7 +193,7 @@ const ToDoTable = () => {
                                 </div>
                             </th>
                             <th className="table-due-date">
-                                Due Date 
+                                DUE DATE 
                                 <div className="arrows">
                                         <div className="up-arrow up-black" id="dueDateUp" onClick={
                                             () => { 
@@ -216,7 +215,7 @@ const ToDoTable = () => {
                                         </div>
                                 </div>
                             </th>
-                            <th className="table-actions">Actions</th>
+                            <th className="table-actions">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>

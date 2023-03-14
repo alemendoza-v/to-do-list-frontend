@@ -132,7 +132,7 @@ const ToDoSearchForm = () => {
                         >
                             <option value="0">All</option>
                             <option value="done">Done</option>
-                            <option value="undone">Undone</option>
+                            <option value="undone">Pending</option>
                         </select>
                         <input className="submit-btn" type="submit" value="Search"></input>
                     </div>

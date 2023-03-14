@@ -48,12 +48,6 @@ const ToDoPagination = () => {
         }
     }
 
-    // useEffect(() => {
-    //     const newValue = pages[pages.length - 1] + 1
-    //     setPages(prev => [...prev, newValue])
-    //     console.log(pages);
-    // }, [next]);
-
     return (
         <div>
             <span onClick={handlePage} id='prev' className="left-arrow">&#60;</span>

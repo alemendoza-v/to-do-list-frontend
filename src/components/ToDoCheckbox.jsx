@@ -11,14 +11,16 @@ const ToDoCheckbox = (props) => {
                 headers: { 'Content-Type': 'application/json' },
             };
             fetch(`/todos/${props.toDo.id}/done`, requestOptions)
-            .then(response => response.json());
+            .then(response => response.json())
+            .then(props.setIsDone());
         } else {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
             };
             fetch(`/todos/${props.toDo.id}/undone`, requestOptions)
-            .then(response => response.json());
+            .then(response => response.json())
+            .then(props.setIsDone());
         }
         
     }

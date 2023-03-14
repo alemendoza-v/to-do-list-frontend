@@ -41,17 +41,22 @@ const ToDoUpdateForm = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (form.text === "") {
+            alert('Name must not be empty')
+            return;
+        }
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
         };
         fetch(`/todos/${toDo.id}`, requestOptions)
-        .then(response => response.json());
+        .then(response => response.json())
+        .then(props.handleClose(event));
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form id="update" onSubmit={handleSubmit}>
             <div className="row">
                 <div className="create-form-label">
                     <label>Name</label>
@@ -85,7 +90,7 @@ const ToDoUpdateForm = (props) => {
                     <ReactDatePicker selected={startDate} onChange={(date) => handleDateChange(date)}/>
                 </div>
             </div>
-            <input className="create-btn" type="submit" value="Update" id="update" onClick={props.handleClose}></input>
+            <input className="create-btn" type="submit" value="Update" id="update"></input>
         </form>           
     )
 }

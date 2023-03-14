@@ -52,11 +52,13 @@
 .to-do-priority {
     padding: 6px;
     border: 1px solid black;
+    text-align: center;
 }
 
 .to-do-due-date {
     padding: 6px;
     border: 1px solid black;
+    text-align: center;
 }
 
 .to-do-actions {
@@ -84,7 +86,7 @@
     border: solid 5px transparent;
     background: transparent;
     border-bottom-width: 0;
-    margin-top:3px;
+    margin-top: 3px;
     cursor: pointer;
 }
 
@@ -112,4 +114,12 @@
 
 .action-btn:hover {
     cursor: pointer;
+}
+
+.done {
+    color: rgb(177, 175, 175);
+}
+
+.undone {
+    color: black;
 }
