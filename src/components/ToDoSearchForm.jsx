@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
-import ToDosContext from '../ToDosContext';
+import ToDosContext from '../context/ToDosContext';
 import '../css/Form.css';
-import UrlContext from '../UrlContext';
-import PrevContext from '../PrevContext';
-import NextContext from '../NextContext';
-import CurrentPageContext from '../CurrentPageContext';
-import PagesContext from '../PagesContext';
+import UrlContext from '../context/UrlContext';
+import PrevContext from '../context/PrevContext';
+import NextContext from '../context/NextContext';
+import CurrentPageContext from '../context/CurrentPageContext';
+import PagesContext from '../context/PagesContext';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -132,7 +132,7 @@ const ToDoSearchForm = () => {
                         >
                             <option value="0">All</option>
                             <option value="done">Done</option>
-                            <option value="undone">Pending</option>
+                            <option value="undone">Undone</option>
                         </select>
                         <input className="submit-btn" type="submit" value="Search"></input>
                     </div>

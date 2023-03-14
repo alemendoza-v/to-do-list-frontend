@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import ToDo from './ToDo';
-import ToDosContext from '../ToDosContext';
+import ToDosContext from '../context/ToDosContext';
 import ToDoUpdateModal from "./ToDoUpdateModal";
-import ToDoContext from "../ToDoContext";
+import ToDoContext from "../context/ToDoContext";
 import '../css/Table.css'
-import UrlContext from "../UrlContext";
-import PrevContext from "../PrevContext";
-import NextContext from "../NextContext";
-import CurrentPageContext from "../CurrentPageContext";
-import PagesContext from "../PagesContext";
+import UrlContext from "../context/UrlContext";
+import PrevContext from "../context/PrevContext";
+import NextContext from "../context/NextContext";
+import CurrentPageContext from "../context/CurrentPageContext";
+import PagesContext from "../context/PagesContext";
 
 const ToDoTable = () => {
     const [showModal, setShowModal] = useState(false);
@@ -226,7 +226,7 @@ const ToDoTable = () => {
             </ToDoContext.Provider>
         </>
     ) : (
-        <div> No to dos found </div>
+        <div className="no-to-dos"> No to dos found </div>
     )
 }
 

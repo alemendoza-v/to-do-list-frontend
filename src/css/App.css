@@ -26,10 +26,6 @@
   cursor: pointer;
 }
 
-.to-do-container {
-  border: 1px solid black;
-}
-
 .pagination-container {
   margin: 10px auto;
   border: 1px solid black;
@@ -40,4 +36,7 @@
 
 .metrics-container {
   border: 1px solid black;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }

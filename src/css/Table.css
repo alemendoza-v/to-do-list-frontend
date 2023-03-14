@@ -123,3 +123,8 @@
 .undone {
     color: black;
 }
+
+.no-to-dos {
+    border: solid 1px black;
+    padding: 5px;
+}

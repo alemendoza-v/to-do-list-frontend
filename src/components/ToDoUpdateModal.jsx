@@ -1,7 +1,7 @@
 import ToDoUpdateForm from './ToDoUpdateForm';
 import '../css/Modal.css';
 import { useContext } from 'react';
-import ToDoContext from '../ToDoContext';
+import ToDoContext from '../context/ToDoContext';
 
 const ToDoUpdateModal = (props) => {
     const showHideClassName = props.show ? "modal display-block" : "modal display-none";

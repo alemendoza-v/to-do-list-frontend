@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import '../css/Pagination.css';
-import CurrentPageContext from '../CurrentPageContext';
-import NextContext from '../NextContext';
-import PagesContext from '../PagesContext';
-import PrevContext from '../PrevContext';
-import ToDosContext from '../ToDosContext';
+import CurrentPageContext from '../context/CurrentPageContext';
+import NextContext from '../context/NextContext';
+import PagesContext from '../context/PagesContext';
+import PrevContext from '../context/PrevContext';
+import ToDosContext from '../context/ToDosContext';
 
 const ToDoPagination = () => {
     const { next, setNext } = useContext(NextContext);
@@ -38,11 +38,9 @@ const ToDoPagination = () => {
     const handlePage = (event) => {
         const id = event.target.id;
         if (id === 'prev' && prev) {
-            console.log('prev clicked');
             fetchPage(prev);
             setCurrentPage(currentPage - 1);
         } else if (id === 'next' && next) {
-            console.log('next clicked');
             fetchPage(next);
             setCurrentPage(currentPage + 1);
         }

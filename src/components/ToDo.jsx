@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import ToDoContext from "../ToDoContext";
+import ToDoContext from "../context/ToDoContext";
 import ToDoCheckbox from "./ToDoCheckbox";
 
 const ToDo = (props) => {
@@ -7,8 +7,8 @@ const ToDo = (props) => {
     const [className, setClassName] = useState('undone');
     const [isDone, setIsDone] = useState(props.toDo.isDone);
 
-    const handleIsDoneChange = () => {
-        setIsDone(prev => !prev);
+    const handleIsDoneChange = (status) => {
+        setIsDone(prev => status);
     }
 
     useEffect(() => {

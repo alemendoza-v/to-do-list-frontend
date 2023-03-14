@@ -2,13 +2,18 @@ import ToDoSearchForm from './components/ToDoSearchForm';
 import ToDoTable from './components/ToDoTable';
 import ToDoModal from './components/ToDoModal';
 import ToDoPagination from './components/ToDoPagination';
-import ToDosContext from './ToDosContext';
-import UrlContext from './UrlContext';
-import NextContext from './NextContext';
-import PrevContext from './PrevContext';
-import CurrentPageContext from './CurrentPageContext';
-import PagesContext from './PagesContext';
+import ToDoMetrics from './components/ToDoMetrics';
+
+import ToDosContext from './context/ToDosContext';
+import UrlContext from './context/UrlContext';
+import NextContext from './context/NextContext';
+import PrevContext from './context/PrevContext';
+import CurrentPageContext from './context/CurrentPageContext';
+import PagesContext from './context/PagesContext';
+import DoneClickContext from './context/DoneClickContext';
+
 import React, { useState } from 'react';
+
 import './css/App.css';
 
 const App = () => {
@@ -25,6 +30,8 @@ const App = () => {
   const currentPageValue = { currentPage, setCurrentPage };
   const [pages, setPages] = useState([]);
   const pagesValue = { pages, setPages };
+  const [doneClick, setDoneClick] = useState(false);
+  const doneClickValue = { doneClick, setDoneClick };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -46,6 +53,7 @@ const App = () => {
         <PrevContext.Provider value={prevValue}>
         <CurrentPageContext.Provider value={currentPageValue}>
         <PagesContext.Provider value={pagesValue}>
+        <DoneClickContext.Provider value={doneClickValue}>
           <>
             <ToDoSearchForm />
           </>        
@@ -60,7 +68,9 @@ const App = () => {
             <ToDoPagination/>
           </div>
           <div className="metrics-container">
+            <ToDoMetrics/>
           </div>
+        </DoneClickContext.Provider>
         </PagesContext.Provider>
         </CurrentPageContext.Provider>
         </PrevContext.Provider>
