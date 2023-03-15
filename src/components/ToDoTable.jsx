@@ -30,7 +30,7 @@ const ToDoTable = () => {
     const { setCurrentPage } = useContext(CurrentPageContext);
     const { setPages } = useContext(PagesContext);
 
-    useEffect(() => {
+    const fetchAllToDos = () => {
         fetch('/todos')
         .then((result) => result.json())
         .then(
@@ -56,6 +56,10 @@ const ToDoTable = () => {
             (error) => {
                 console.log('There was an error');
             })
+    }
+
+    useEffect(() => {
+        fetchAllToDos()
     },[])
         
     const handleShowModal = () => {
