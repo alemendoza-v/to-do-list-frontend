@@ -22,7 +22,7 @@ const ToDoCreateForm = (props) => {
     };
 
     const handleDateChange = (date) => {
-        setStartDate(date);
+        setStartDate(prev => date);
         setForm((prev) => {
             return {...prev, 'dueDate': date.toISOString().substring(0, 10)}
         })
@@ -41,7 +41,13 @@ const ToDoCreateForm = (props) => {
         };
         fetch('/todos', requestOptions)
         .then(response => response.json())
-        .then(props.handleClose(event));
+        .then((response => {
+            if (response.status === 201) {
+                props.handleClose(event);
+            } else if (response.status === 400) {
+                alert('Duplicate to dos are not allowed');
+            }
+        }))
     }
 
     return (

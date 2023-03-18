@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import '../css/Pagination.css';
 import CurrentPageContext from '../context/CurrentPageContext';
 import NextContext from '../context/NextContext';
@@ -14,22 +14,25 @@ const ToDoPagination = () => {
     const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
 
     const fetchPage = (url) => {
-        console.log('fetching:' + url);
         fetch(url)
-        .then(result => result.json())
+        .then(response => response.json())
         .then(
-            (result => {
-                const data = result.data;
-                const p = result.prev;
-                const n = result.next;
-                setToDos(data);
-                setNext(n);
-                setPrev(p);
-                if (n) {
-                    let nextPage = parseInt(n.charAt(n.length - 1)) + 1;
-                    if (!pages.includes(nextPage)) {
-                        setPages(prev => [...prev, nextPage]);
+            ((response) => {
+                if (response.status === 200) {
+                    const data = response.data;
+                    const p = response.prev;
+                    const n = response.next;
+                    setToDos(prev => data);
+                    setNext(prev => n);
+                    setPrev(prev => p);
+                    if (n) {
+                        let nextPage = parseInt(n.charAt(n.length - 1)) + 1;
+                        if (!pages.includes(nextPage)) {
+                            setPages(prev => [...prev, nextPage]);
+                        }
                     }
+                } else {
+                    console.log('Next page could not be fetched');
                 }
             })
         )

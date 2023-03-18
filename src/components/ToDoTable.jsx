@@ -32,30 +32,37 @@ const ToDoTable = () => {
 
     const fetchAllToDos = () => {
         fetch('/todos')
-        .then((result) => result.json())
-        .then(
-            (result) => {
-                const toDos = result.data;
-                const p = result.prev;
-                const n = result.next;
-                setToDos(toDos);
-                setPrev(p);
-                setNext(n);
-                if (!p) {
-                    setCurrentPage(1);
-                    setPages(prev => [...prev, 1]);
-                }
-                if (n) {
-                    let nextPage = parseInt(n.charAt(n.length - 1));
-                    if (p) {
-                        setCurrentPage(nextPage);
+        .then((response) => response.json())
+        .then((response) => {
+                if (response.status === 200) {
+                    const toDos = response.data;
+                    const p = response.prev;
+                    const n = response.next;
+                    const pages = response.pages;
+                    setToDos(prev => toDos);
+                    setPrev(prev => p);
+                    setNext(prev => n);
+                    setPages(prev => {
+                        let newPages = [];
+                        for (let i = 1; i <=  pages; i++) {
+                            newPages.push(i);
+                        }
+                        return newPages;
+                    });
+                    if (!p) {
+                        setCurrentPage(prev => 1);
                     }
-                    setPages(prev => [...prev, nextPage + 1]);
-                } 
-            },
-            (error) => {
-                console.log('There was an error');
-            })
+                    if (n) {
+                        let nextPage = parseInt(n.charAt(n.length - 1));
+                        if (p) {
+                            setCurrentPage(prev => nextPage);
+                        }
+                    } 
+                } else if (response === 400) {
+                    console.log('There was an error fetching the data');
+                }
+                }
+            )
     }
 
     useEffect(() => {

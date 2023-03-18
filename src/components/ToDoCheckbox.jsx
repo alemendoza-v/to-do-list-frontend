@@ -5,7 +5,7 @@ const ToDoCheckbox = (props) => {
     const [checked, setChecked] = useState(props.toDo.isDone);
     const { setDoneClick } = useContext(DoneClickContext);
 
-    const setDoneOrUnDone = () => {
+    const setDoneOrUnDone = (checked) => {
         if(checked) {
             const requestOptions = {
                 method: 'POST',
@@ -13,6 +13,11 @@ const ToDoCheckbox = (props) => {
             };
             fetch(`/todos/${props.toDo.id}/done`, requestOptions)
             .then(response => response.json())
+            .then((response) => {
+                if (response.status === 400) {
+                    alert('To do could not be set as done');
+                }
+            })
             .then(setDoneClick(prev => !prev))
             .then(props.setIsDone(true))
         } else {
@@ -22,17 +27,20 @@ const ToDoCheckbox = (props) => {
             };
             fetch(`/todos/${props.toDo.id}/undone`, requestOptions)
             .then(response => response.json())
+            .then((response => {
+                if (response.status === 400) {
+                    alert('To do could not be set as undone');
+                }
+            }))
             .then(setDoneClick(prev => !prev))
             .then(props.setIsDone(false))
         }
+        console.log('changed status of to do')
     }
 
-    useEffect(() => {
-        setDoneOrUnDone()
-    }, [checked])
-
     const handleChange = () => {
-        setChecked(prev => !prev)
+        setChecked(prev => !prev);
+        setDoneOrUnDone(!checked);
     }
 
     return (

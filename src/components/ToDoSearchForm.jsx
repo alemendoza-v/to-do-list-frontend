@@ -32,32 +32,33 @@ const ToDoSearchForm = () => {
 
     const fetchFiltered = (url) => {
         fetch(url)
-        .then((result) => result.json())
+        .then((response) => response.json())
         .then(
-            (result) => {
-                const data = result.data;
-                const p = result.prev;
-                const n = result.next;
-                setToDos(data);
-                setUrl(url);
-                setPrev(p);
-                setNext(n);
-                setPages([]);
+            (response) => {
+                const data = response.data;
+                const p = response.prev;
+                const n = response.next;
+                const pages = response.pages;
+                setToDos(prev => data);
+                setUrl(prev => url);
+                setPrev(prev => p);
+                setNext(prev => n);
+                setPages(prev => {
+                    let newPages = [];
+                    for (let i = 1; i <=  pages; i++) {
+                        newPages.push(i);
+                    }
+                    return newPages;
+                });
                 if (!p) {
                     setCurrentPage(1);
-                    setPages(prev => [...prev, 1]);
                 }
                 if (n) {
                     let nextPage = parseInt(n.charAt(n.length - 1));
                     if (p) {
                         setCurrentPage(nextPage);
                     }
-                    console.log('adding next page');
-                    setPages(prev => [...prev, nextPage + 1]);
                 } 
-            },
-            (error) =>  {
-                console.log('There was an error fetching the data');
             }
         )
     }

@@ -43,6 +43,8 @@ const ToDo = (props) => {
             .then(response => {
                 if (response.ok) {
                     window.location.reload(false);
+                } else {
+                    alert('There was an error deleting the to-do');
                 }
             })
         }
@@ -50,7 +52,7 @@ const ToDo = (props) => {
 
     const handleUpdate = (event) => {
         if(event) {
-            setToDo(props.toDo);
+            setToDo(prev => props.toDo);
             props.handleShow();
         }
     }

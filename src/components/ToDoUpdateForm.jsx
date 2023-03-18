@@ -33,7 +33,7 @@ const ToDoUpdateForm = (props) => {
     };
 
     const handleDateChange = (date) => {
-        setStartDate(date);
+        setStartDate(prev => date);
         setForm((prev) => {
             return {...prev, 'dueDate': date.toISOString().substring(0, 10)}
         })
@@ -90,7 +90,7 @@ const ToDoUpdateForm = (props) => {
                     <ReactDatePicker selected={startDate} onChange={(date) => handleDateChange(date)}/>
                 </div>
             </div>
-            <input className="create-btn" type="submit" value="Update" id="update"></input>
+            <input className="create-btn" type="submit" value="Update"></input>
         </form>           
     )
 }
