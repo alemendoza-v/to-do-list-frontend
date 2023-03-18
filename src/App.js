@@ -11,6 +11,7 @@ import PrevContext from './context/PrevContext';
 import CurrentPageContext from './context/CurrentPageContext';
 import PagesContext from './context/PagesContext';
 import DoneClickContext from './context/DoneClickContext';
+import ButtonsContext from './context/ButtonsContext';
 
 import React, { useState } from 'react';
 
@@ -32,6 +33,13 @@ const App = () => {
   const pagesValue = { pages, setPages };
   const [doneClick, setDoneClick] = useState(false);
   const doneClickValue = { doneClick, setDoneClick };
+  const [buttons, setButtons] = useState({
+        priorityUp: false,
+        priorityDown: false,
+        dueDateUp: false,
+        dueDateDown: false,
+  })
+  const buttonsValue = { buttons, setButtons };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -54,6 +62,7 @@ const App = () => {
         <CurrentPageContext.Provider value={currentPageValue}>
         <PagesContext.Provider value={pagesValue}>
         <DoneClickContext.Provider value={doneClickValue}>
+          <ButtonsContext.Provider value={buttonsValue}>
           <>
             <ToDoSearchForm />
           </>        
@@ -70,6 +79,7 @@ const App = () => {
           <div className="metrics-container">
             <ToDoMetrics/>
           </div>
+        </ButtonsContext.Provider>
         </DoneClickContext.Provider>
         </PagesContext.Provider>
         </CurrentPageContext.Provider>

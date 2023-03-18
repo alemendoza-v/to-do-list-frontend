@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from "react"
+import { useState, useEffect, useContext } from "react"
 import ToDo from './ToDo';
 import ToDosContext from '../context/ToDosContext';
 import ToDoUpdateModal from "./ToDoUpdateModal";
@@ -9,6 +9,7 @@ import PrevContext from "../context/PrevContext";
 import NextContext from "../context/NextContext";
 import CurrentPageContext from "../context/CurrentPageContext";
 import PagesContext from "../context/PagesContext";
+import ButtonsContext from "../context/ButtonsContext";
 
 const ToDoTable = () => {
     const [showModal, setShowModal] = useState(false);
@@ -18,17 +19,22 @@ const ToDoTable = () => {
     const [modal, setModal] = useState(<></>);
     const [sortBy, setSortBy] = useState([]);
     const [orderBy, setOrderBy] = useState([]);
-    const buttons = useRef({
-        priorityUp: false,
-        priorityDown: false,
-        dueDateUp: false,
-        dueDateDown: false,
-    })
+    // const [buttons, setButtons] = useState({
+    //     priorityUp: false,
+    //     priorityDown: false,
+    //     dueDateUp: false,
+    //     dueDateDown: false,
+    // })
+    const { buttons, setButtons } = useContext(ButtonsContext);
     const { url } = useContext(UrlContext);
     const { setPrev } = useContext(PrevContext);
     const { setNext } = useContext(NextContext);
     const { setCurrentPage } = useContext(CurrentPageContext);
     const { setPages } = useContext(PagesContext);
+    const [priorityUpClass, setPriorityUpClass] = useState(false);
+    const [priorityDownClass, setPriorityDownClass] = useState(false);
+    const [dueDateUpClass, setDueDateUpClass] = useState(false);
+    const [dueDateDownClass, setDueDateDownClass] = useState(false);
 
     const fetchAllToDos = () => {
         fetch('/todos')
@@ -140,35 +146,58 @@ const ToDoTable = () => {
         }
     }
 
-    const handleSwitch = (element) => {
-        if (buttons.current[element.id]) {
-            if (element.id.includes('Up')) {
-                element.className = 'up-arrow up-white';
-            } else {
-                element.className = 'down-arrow down-white';
-            }
-        } else {
-            if (element.id.includes('Down')) {
-                element.className = 'down-arrow down-black';
-            } else {
-                element.className = 'up-arrow up-black';
-            }
+    const handleSwitch = (key) => {
+        switch(key) {
+            case 'priorityUp':
+                if(buttons.priorityUp) {
+                    setPriorityUpClass(prev => true);
+                } else {
+                    setPriorityUpClass(prev => false);
+                }
+                break;
+            case 'priorityDown':
+                if(buttons.priorityDown) {
+                    setPriorityDownClass(prev => true);
+                } else {
+                    setPriorityDownClass(prev => false);
+                }
+                break;
+            case 'dueDateUp':
+                if(buttons.dueDateUp) {
+                    setDueDateUpClass(prev => true);
+                } else {
+                    setDueDateUpClass(prev => false);
+                }
+                break;
+            case 'dueDateDown':
+                if(buttons.dueDateDown) {
+                    setDueDateDownClass(prev => true);
+                } else {
+                    setDueDateDownClass(prev => false);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     const handleColorChange = () => {
-        if(buttons.current['priorityUp'] && buttons.current['priorityDown']) {
-            document.getElementById('priorityUp').className = 'up-arrow up-black';
-            document.getElementById('priorityDown').className = 'down-arrow down-black';
-        } else if (buttons.current['dueDateUp'] && buttons.current['dueDateDown']) {
-            document.getElementById('dueDateUp').className = 'up-arrow up-black';
-            document.getElementById('dueDateDown').className = 'down-arrow down-black';
+        if(buttons.priorityUp && buttons.priorityDown) {
+            setPriorityUpClass(prev => false);
+            setPriorityDownClass(prev => false);
+        } else if (buttons.dueDateUp && buttons.dueDateDown) {
+            setDueDateUpClass(prev => false);
+            setDueDateDownClass(prev => false);
         }
 
-        Object.keys(buttons.current).map(key => {
-            handleSwitch(document.getElementById(key));
+        Object.keys(buttons).map(key => {
+            handleSwitch(key);
         })   
-        }
+    }
+
+    useEffect(() => {
+        handleColorChange();
+    }, [buttons])
 
     return toDos.length > 0 
     ? (
@@ -182,21 +211,21 @@ const ToDoTable = () => {
                             <th className="table-priority">
                                 PRIORITY 
                                 <div className="arrows">
-                                    <div className="up-arrow up-black" id="priorityUp" onClick={
+                                    <div className={priorityUpClass ? "up-arrow up-white" : "up-arrow up-black"} id="priorityUp" onClick={
                                         () => { 
-                                            buttons.current.priorityUp = !buttons.current.priorityUp;
-                                            buttons.current.priorityDown = false;
-                                            handleColorChange();
+                                            setButtons((prev) => {
+                                                return {...prev, 'priorityUp': !prev.priorityUp, 'priorityDown': false}
+                                            });
                                             handleSortingChange('priority', 'asc');
                                         }
                                     }
                                     >
                                     </div>
-                                    <div className="down-arrow down-black" id="priorityDown" onClick={
+                                    <div className={priorityDownClass ? "down-arrow down-white" : "down-arrow down-black"} id="priorityDown" onClick={
                                         () => { 
-                                            buttons.current.priorityDown = !buttons.current.priorityDown;
-                                            buttons.current.priorityUp = false;
-                                            handleColorChange();
+                                            setButtons((prev) => {
+                                                return {...prev, 'priorityDown': !prev.priorityDown, 'priorityUp': false}
+                                            });
                                             handleSortingChange('priority', 'desc');
                                         }
                                     }>
@@ -206,20 +235,20 @@ const ToDoTable = () => {
                             <th className="table-due-date">
                                 DUE DATE 
                                 <div className="arrows">
-                                        <div className="up-arrow up-black" id="dueDateUp" onClick={
+                                        <div className={dueDateUpClass ? "up-arrow up-white" : "up-arrow up-black"} id="dueDateUp" onClick={
                                             () => { 
-                                                buttons.current.dueDateUp = !buttons.current.dueDateUp;
-                                                buttons.current.dueDateDown = false;
-                                                handleColorChange();
+                                                setButtons((prev) => {
+                                                return {...prev, 'dueDateUp': !prev.dueDateUp, 'dueDateDown': false}
+                                                });
                                                 handleSortingChange('dueDate', 'asc');
                                             }
                                         }>
                                         </div>
-                                        <div className="down-arrow down-black" id="dueDateDown" onClick={
+                                        <div className={dueDateDownClass ? "down-arrow down-white" : "down-arrow down-black"} id="dueDateDown" onClick={
                                             () => { 
-                                                buttons.current.dueDateDown = !buttons.current.dueDateDown;
-                                                buttons.current.dueDateUp = false;
-                                                handleColorChange();
+                                                setButtons((prev) => {
+                                                return {...prev, 'dueDateDown': !prev.dueDateDown, 'dueDateUp': false}
+                                                });
                                                 handleSortingChange('dueDate', 'desc');
                                             }
                                         }>

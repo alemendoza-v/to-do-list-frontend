@@ -35,7 +35,6 @@ const ToDoCheckbox = (props) => {
             .then(setDoneClick(prev => !prev))
             .then(props.setIsDone(false))
         }
-        console.log('changed status of to do')
     }
 
     const handleChange = () => {

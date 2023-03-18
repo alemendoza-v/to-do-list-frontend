@@ -6,6 +6,7 @@ import PrevContext from '../context/PrevContext';
 import NextContext from '../context/NextContext';
 import CurrentPageContext from '../context/CurrentPageContext';
 import PagesContext from '../context/PagesContext';
+import ButtonsContext from '../context/ButtonsContext';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -20,6 +21,7 @@ const ToDoSearchForm = () => {
     const { setNext } = useContext(NextContext);
     const { setCurrentPage } = useContext(CurrentPageContext);
     const { setPages } = useContext(PagesContext);
+    const { setButtons } = useContext(ButtonsContext);
 
     const handleInputChange = (event) => {
         const name = event.target.name;
@@ -58,7 +60,14 @@ const ToDoSearchForm = () => {
                     if (p) {
                         setCurrentPage(nextPage);
                     }
-                } 
+                }
+                setButtons((prev) => {
+                    return { ...prev, 
+                        'priorityUp': false,
+                        'priorityDown': false,
+                        'dueDateUp': false,
+                        'dueDateDown': false}
+                }) 
             }
         )
     }
