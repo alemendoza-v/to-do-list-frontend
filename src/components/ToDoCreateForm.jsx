@@ -45,7 +45,7 @@ const ToDoCreateForm = (props) => {
             if (response.status === 201) {
                 props.handleClose(event);
             } else if (response.status === 400) {
-                alert('Duplicate to dos are not allowed');
+                alert(response.data);
             }
         }))
     }

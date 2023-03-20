@@ -19,12 +19,6 @@ const ToDoTable = () => {
     const [modal, setModal] = useState(<></>);
     const [sortBy, setSortBy] = useState([]);
     const [orderBy, setOrderBy] = useState([]);
-    // const [buttons, setButtons] = useState({
-    //     priorityUp: false,
-    //     priorityDown: false,
-    //     dueDateUp: false,
-    //     dueDateDown: false,
-    // })
     const { buttons, setButtons } = useContext(ButtonsContext);
     const { url } = useContext(UrlContext);
     const { setPrev } = useContext(PrevContext);

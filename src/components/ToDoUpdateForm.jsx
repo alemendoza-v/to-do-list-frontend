@@ -52,7 +52,13 @@ const ToDoUpdateForm = (props) => {
         };
         fetch(`/todos/${toDo.id}`, requestOptions)
         .then(response => response.json())
-        .then(props.handleClose(event));
+        .then((response) => {
+            if(response.status === 400) {
+                alert(response.data);
+            } else {
+                props.handleClose(event)
+            }
+        })
     }
 
     return (
