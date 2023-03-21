@@ -1,0 +1,25 @@
+.left-arrow, .right-arrow{
+    font-weight: 500;
+}
+
+.left-arrow, .right-arrow:hover {
+    cursor: pointer;
+}
+
+.right-arrow {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left-arrow {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.page {
+    padding: 5px;
+}
+
+.active {
+    text-decoration: underline;
+}

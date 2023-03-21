@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+.search-container {
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+
+.row {
+    width: 95%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+.form-label {
+    float: left;
+    width: 8%;
+}
+
+.create-form-label {
+    float: left;
+    width: 10%;
+}
+
+.form-label, .create-form-label label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+  
+.form-input {
+    float: left;
+    width: 92%;
+    margin-top: 8px;
+}
+
+.create-form-input {
+    float: left;
+    width: 90%;
+    margin-top: 8px;
+}
+  
+.name-form-input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid black;
+    
+}
+  
+.priority-form-input, .status-form-input {
+    width: 50%;
+    padding: 6px;
+    border: 1px solid black;
+}
+
+.create-priority-form-input {
+    width: 20.8%;
+    padding: 6px;
+    border: 1px solid black;
+}
+  
+.submit-btn, .create-btn {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+.submit-btn {
+    float: right;
+}
+
+.create-btn {
+    float: left;
+}
+
+.submit-btn, .create-btn:hover {
+    cursor: pointer;
+}

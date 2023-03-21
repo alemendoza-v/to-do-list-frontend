@@ -1,0 +1,42 @@
+.body-container {
+  border: 1px solid black;
+  height: auto;
+  width: auto;
+  margin: 5px;
+}
+
+.inv-container {
+  margin: 15px;
+}
+
+.new-button {
+  margin-bottom: 10px;
+}
+
+.new-button input[type=button] {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+.new-button input[type=button]:hover {
+  cursor: pointer;
+}
+
+.pagination-container {
+  margin: 10px auto;
+  border: 1px solid black;
+  padding: 20px;
+  text-align: center;
+  width: 50%;
+}
+
+.metrics-container {
+  border: 1px solid black;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

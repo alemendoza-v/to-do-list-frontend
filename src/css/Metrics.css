@@ -1,0 +1,37 @@
+.title {
+    font-weight: bold;
+}
+
+.all-metrics {
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.priority-metrics {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.metric {
+    display: flex;
+    width: 100%;
+}
+
+.metric-label {
+    padding-top: 5px;
+    width: 25%;
+}
+
+.metric-value {
+    padding-top: 5px;
+    width: 15%;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.metric-value-all {
+    text-align: center;
+    padding-top: 10px;
+}
