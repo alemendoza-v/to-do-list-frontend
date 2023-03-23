@@ -118,6 +118,7 @@
 
 .done {
     color: rgb(177, 175, 175);
+    text-decoration: line-through;
 }
 
 .undone {
@@ -127,4 +128,16 @@
 .no-to-dos {
     border: solid 1px black;
     padding: 5px;
+}
+
+.red {
+    background-color: rgb(233, 70, 70);
+}
+
+.yellow {
+    background-color: rgb(255, 255, 96);
+}
+
+.green {
+    background-color: rgb(102, 250, 102);
 }

@@ -2,10 +2,33 @@ import { useContext, useEffect, useState } from "react";
 import ToDoContext from "../context/ToDoContext";
 import ToDoCheckbox from "./ToDoCheckbox";
 
+import '../css/Table.css';
+
 const ToDo = (props) => {
     const { setToDo } = useContext(ToDoContext);
-    const [className, setClassName] = useState('undone');
+    const [statusClassName, setStatusClassName] = useState('undone');
     const [isDone, setIsDone] = useState(props.toDo.isDone);
+    const [colorClassName, setColorClassName] = useState('');
+
+    useEffect(() => {
+        if (props.toDo.dueDate) {
+            let today = new Date();
+            let dueDate = new Date(props.toDo.dueDate.replace('-', '/'));
+    
+            let differenceInTime = dueDate.getTime() - today.getTime();
+    
+            let differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    
+            if (differenceInDays <= 7) {
+                setColorClassName(prev => 'red');
+            } else if (differenceInDays <= 14) {
+                setColorClassName(prev => 'yellow');
+            } else {
+                setColorClassName(prev => 'green');
+            }
+            
+        }
+    }, [])
 
     const handleIsDoneChange = (status) => {
         setIsDone(prev => status);
@@ -13,9 +36,9 @@ const ToDo = (props) => {
 
     useEffect(() => {
         if (isDone) {
-            setClassName(prev => 'done')
+            setStatusClassName(prev => 'done')
         } else {
-            setClassName(prev => 'undone')
+            setStatusClassName(prev => 'undone')
         }
     }, [isDone]);
 
@@ -59,15 +82,15 @@ const ToDo = (props) => {
 
     return (
         <>
-        <tr>
-            <td className={`to-do-checkbox ${className}`}><ToDoCheckbox toDo={props.toDo} setIsDone={handleIsDoneChange} /></td>
-            <td className={`to-do-text ${className}`}>{props.toDo.text}</td>
-            <td className={`to-do-priority ${className}`}>{priorityToText(props.toDo.priority)}</td>
-            <td className={`to-do-due-date ${className}`}>{props.toDo.dueDate}</td>
-            <td className={`to-do-actions ${className}`}>
-            <input type="button" className={`action-btn ${className}`} onClick={handleUpdate} value="Update"></input>
+        <tr className={colorClassName}>
+            <td className={`to-do-checkbox ${statusClassName}`}><ToDoCheckbox toDo={props.toDo} setIsDone={handleIsDoneChange} /></td>
+            <td className={`to-do-text ${statusClassName}`}>{props.toDo.text}</td>
+            <td className={`to-do-priority ${statusClassName}`}>{priorityToText(props.toDo.priority)}</td>
+            <td className={`to-do-due-date ${statusClassName}`}>{props.toDo.dueDate}</td>
+            <td className={`to-do-actions ${statusClassName}`}>
+            <input type="button" className={`action-btn ${statusClassName}`} onClick={handleUpdate} value="Update"></input>
             / 
-            <input type="button" className={`action-btn ${className}`} onClick={handleDelete} value="Delete"></input>
+            <input type="button" className={`action-btn ${statusClassName}`} onClick={handleDelete} value="Delete"></input>
             </td>
         </tr>
      </>
