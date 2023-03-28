@@ -1,53 +1,293 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
-import nock from 'nock';
-// import '@testing-library/jest-dom/extend-expect';
-import ToDoTable from './components/ToDoTable';
-import App from './App';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+import * as api from './ApiCalls';
+import App from './App';
 
-test('loads and displays no to dos', async () => {
-  const fakeResponse = {
-    next: null,
-    data: [],
-    prev: null,
-    status: 200
-  };
-  jest.spyOn(global, "fetch").mockImplementation(() => 
-  Promise.resolve({
-    json: () => Promise.resolve(fakeResponse)
-  })
-  );
-  act(() => render(<App/>))
+jest.mock("./ApiCalls");
+
+describe('Application', () => {
+
+  beforeEach(() => jest.clearAllMocks());
+
+  afterEach(cleanup);
   
-  await waitFor(() => expect(screen.getByText("No to dos found")));  
-  global.fetch.mockRestore();
-})
-
-it('loads and displays 1 to do', async () => {
-  const fakeResponse = {
-    next: null,
-    data: [
-      {
-        text: "Call doctor",
-        priority: 2,
-        dueDate: "2023-03-06",
-        id: "51fefa89-c24b-4127-9912-777d5c32ce73",
-        isDone: false,
-        doneDate: null,
-        createdAt: "2023-03-12T14:24:30.709659" 
+  it('should render table with to-do when api responds', async () => {
+    api.getMetrics.mockResolvedValue({
+      "data": {
+          "averageMedium": null,
+          "averageHigh": null,
+          "averageAll": null,
+          "averageLow": null
       },
-    ],
-    prev: null,
-    status: 200
-  };
-  jest.spyOn(global, "fetch").mockImplementation(() => 
-  Promise.resolve({
-    json: () => Promise.resolve(fakeResponse)
-  })
-  );
-  act(() => render(<App/>))
+      "status": 200
+    });
+
+    api.fetchAllToDos.mockResolvedValue({
+      'toDos': [
+        {
+          'text': "Go to school",
+          'priority': 3,
+          'dueDate': null,
+          'id': "759315c6-66a6-4bf8-a820-51b4494b657a",
+          'isDone': false,
+          'doneDate': null,
+          'createdAt': "2023-03-27T09:35:05.003879"
+        }
+      ],
+      'prev': null,
+      'next': null,
+      'pages': 1
+    });
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('Go to school')).toBeInTheDocument();
+    });
+  });
+
+  it('should render table with no to-dos when api responds', async () => {
+    api.getMetrics.mockResolvedValue({
+      "data": {
+          "averageMedium": null,
+          "averageHigh": null,
+          "averageAll": null,
+          "averageLow": null
+      },
+      "status": 200
+    });
+
+    api.fetchAllToDos.mockResolvedValue({
+      'toDos': [],
+      'prev': null,
+      'next': null,
+      'pages': 1
+    });
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('No to dos found')).toBeInTheDocument();
+    });
+  });
+
+  it('should render table with a created to-do when a to-do is created', async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { reload: jest.fn() };
+
+    api.getMetrics.mockResolvedValue({
+      "data": {
+          "averageMedium": null,
+          "averageHigh": null,
+          "averageAll": null,
+          "averageLow": null
+      },
+      "status": 200
+    });
+
+    api.fetchAllToDos = jest.fn()
+      .mockResolvedValueOnce({
+        'toDos': [],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+      .mockResolvedValueOnce({
+        'toDos': [{
+            text: "Work on frontend",
+            priority: 1,
+            dueDate: null,
+            id: "2303c08e-50cf-4d89-a67c-5586f9eddedc",
+            isDone: false,
+            doneDate: null,
+            createdAt: "2023-03-27T11:27:59.525399"
+        }],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      });
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('No to dos found')).toBeInTheDocument();
+    });
+
+    act(() => {
+      const newToDoButton = screen.getByRole('button', {name: '+ New To Do'});
+      fireEvent.click(newToDoButton);
   
-  await waitFor(() => expect(screen.getByText("Call doctor")).toBeInTheDocument());  
-  global.fetch.mockRestore();
-})
+      const nameTextBox = screen.getByRole('textbox', {name: 'create-text'});
+      const priorityOptionBox = screen.getByRole('combobox', {name: 'create-priority'});
+  
+      userEvent.type(nameTextBox, 'Work on frontend');
+      userEvent.selectOptions(priorityOptionBox, "Low");
+    })
+
+    api.createToDo.mockResolvedValue({
+      data: {
+          text: "Work on frontend",
+          priority: 1,
+          dueDate: null,
+          id: "2303c08e-50cf-4d89-a67c-5586f9eddedc",
+          isDone: false,
+          doneDate: null,
+          createdAt: "2023-03-27T11:27:59.525399"
+      },
+      status: 201
+    });
+
+    const createButton = screen.getByRole('button', {name: 'Create'});
+
+    fireEvent.click(createButton);
+
+    //Render again to simulate a page reload
+    render(<App/>)
+
+    await waitFor(() => {
+      expect(screen.getByText('Work on frontend')).toBeInTheDocument();
+    });
+  });
+
+  it('should not render to-do after being deleted', async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { reload: jest.fn() };
+
+    api.fetchAllToDos = jest.fn()
+      .mockResolvedValueOnce({
+        'toDos': [
+          {
+            'text': "Go to school",
+            'priority': 3,
+            'dueDate': null,
+            'id': "759315c6-66a6-4bf8-a820-51b4494b657a",
+            'isDone': false,
+            'doneDate': null,
+            'createdAt': "2023-03-27T09:35:05.003879"
+          }
+        ],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+      .mockResolvedValueOnce({
+        toDos: [],
+        prev: null,
+        next: null,
+        pages: 1
+      })
+
+    api.getMetrics.mockResolvedValue({
+        "data": {
+            "averageMedium": null,
+            "averageHigh": null,
+            "averageAll": null,
+            "averageLow": null
+        },
+        "status": 200
+    });
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('Go to school')).toBeInTheDocument();
+    });
+    
+    api.deleteToDo.mockResolvedValue(true);
+
+    const deleteButton = screen.getByRole('button', {name: 'Delete'});
+    
+    fireEvent.click(deleteButton);
+
+    //Render the App again to simulate a page reload
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('No to dos found')).toBeInTheDocument();
+    });
+  }); 
+
+  it('should render a done to-do after being set as done', async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { reload: jest.fn() };
+
+    api.fetchAllToDos = jest.fn()
+      .mockResolvedValueOnce({
+        'toDos': [
+          {
+            'text': "Go to school",
+            'priority': 3,
+            'dueDate': null,
+            'id': "759315c6-66a6-4bf8-a820-51b4494b657a",
+            'isDone': false,
+            'doneDate': null,
+            'createdAt': "2023-03-27T09:35:05.003879"
+          }
+        ],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+      .mockResolvedValueOnce({
+        'toDos': [
+          {
+            'text': "Go to school",
+            'priority': 3,
+            'dueDate': null,
+            'id': "759315c6-66a6-4bf8-a820-51b4494b657a",
+            'isDone': true,
+            'doneDate': null,
+            'createdAt': "2023-03-27T09:35:05.003879"
+          }
+        ],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+
+    api.getMetrics.mockResolvedValue({
+        "data": {
+            "averageMedium": null,
+            "averageHigh": null,
+            "averageAll": null,
+            "averageLow": null
+        },
+        "status": 200
+    });
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('Go to school')).toBeInTheDocument();
+    });
+    
+    api.setToDoAsDone.mockResolvedValue({
+      "data": {
+          "text": "Call the doctor",
+          "priority": 2,
+          "dueDate": "2023-03-16",
+          "id": "dc8cc7d5-19e7-4e57-a1b7-5ddb799e790e",
+          "isDone": true,
+          "doneDate": "2023-03-27T19:14:38.848292",
+          "createdAt": "2023-03-27T19:14:18.13023"
+      },
+      "status": 200
+    })
+
+    const doneButton = screen.getByRole('checkbox');
+    
+    fireEvent.click(doneButton);
+
+    //Render the App again to simulate a page reload
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByRole('checkbox')).toBeChecked();
+    });
+  });
+
+});

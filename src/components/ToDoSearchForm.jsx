@@ -7,6 +7,7 @@ import NextContext from '../context/NextContext';
 import CurrentPageContext from '../context/CurrentPageContext';
 import PagesContext from '../context/PagesContext';
 import ButtonsContext from '../context/ButtonsContext';
+import { fetchApi } from '../ApiCalls';
 
 const ToDoSearchForm = () => {
     const [form, setForm] = useState({
@@ -33,8 +34,7 @@ const ToDoSearchForm = () => {
     };
 
     const fetchFiltered = (url) => {
-        fetch(url)
-        .then((response) => response.json())
+        fetchApi(url)
         .then(
             (response) => {
                 const data = response.data;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import '../css/Form.css';
 import "react-datepicker/dist/react-datepicker.css";
+import { createToDo } from '../ApiCalls';
 
 const ToDoCreateForm = (props) => {
     const [form, setForm] = useState({
@@ -34,20 +35,14 @@ const ToDoCreateForm = (props) => {
             alert('Name must not be empty')
             return;
         }
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(form)
-        };
-        fetch('/todos', requestOptions)
-        .then(response => response.json())
-        .then((response => {
+        createToDo(form)
+        .then(response => {
             if (response.status === 201) {
                 props.handleClose(event);
             } else if (response.status === 400) {
                 alert(response.data);
             }
-        }))
+        })
     }
     
     return (
@@ -59,7 +54,7 @@ const ToDoCreateForm = (props) => {
                         <label>Name</label>
                     </div>
                     <div className="create-form-input">
-                        <input className="name-form-input" type="text" name="text" onChange={handleInputChange} />
+                        <input aria-label="create-text" className="name-form-input" type="text" name="text" onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="row">
@@ -68,6 +63,7 @@ const ToDoCreateForm = (props) => {
                     </div>
                     <div className="create-form-input">
                         <select 
+                            aria-label="create-priority"
                             className="create-priority-form-input"
                             name="priority" 
                             onChange={handleInputChange}

@@ -10,6 +10,8 @@ import NextContext from "../context/NextContext";
 import CurrentPageContext from "../context/CurrentPageContext";
 import PagesContext from "../context/PagesContext";
 import ButtonsContext from "../context/ButtonsContext";
+import { fetchAllToDos } from "../ApiCalls";
+import { fetchApi } from "../ApiCalls";
 
 const ToDoTable = () => {
     const [showModal, setShowModal] = useState(false);
@@ -30,43 +32,37 @@ const ToDoTable = () => {
     const [dueDateUpClass, setDueDateUpClass] = useState(false);
     const [dueDateDownClass, setDueDateDownClass] = useState(false);
 
-    const fetchAllToDos = () => {
-        fetch('/todos')
-        .then((response) => response.json())
-        .then((response) => {
-                if (response.status === 200) {
-                    const toDos = response.data;
-                    const p = response.prev;
-                    const n = response.next;
-                    const pages = response.pages;
-                    setToDos(prev => toDos);
-                    setPrev(prev => p);
-                    setNext(prev => n);
-                    setPages(prev => {
-                        let newPages = [];
-                        for (let i = 1; i <=  pages; i++) {
-                            newPages.push(i);
-                        }
-                        return newPages;
-                    });
-                    if (!p) {
-                        setCurrentPage(prev => 1);
-                    }
-                    if (n) {
-                        let nextPage = parseInt(n.charAt(n.length - 1));
-                        if (p) {
-                            setCurrentPage(prev => nextPage);
-                        }
-                    } 
-                } else if (response === 400) {
-                    console.log('There was an error fetching the data');
-                }
-                }
-            )
+    const handleFetchedToDos = (response) => {
+        setToDos(prev => response.toDos);
+        setPrev(prev => response.prev);
+        setNext(prev => response.next);
+        setPages(prev => {
+            let newPages = [];
+            for (let i = 1; i <=  response.pages; i++) {
+                newPages.push(i);
+            }
+            return newPages;
+        });
+        if (!response.prev) {
+            setCurrentPage(prev => 1);
+        }
+        if (response.next) {
+            let nextPage = parseInt(response.next.charAt(response.next.length - 1));
+            if (response.prev) {
+                setCurrentPage(prev => nextPage);
+            }
+        }
     }
 
     useEffect(() => {
         fetchAllToDos()
+            .then((response) => {
+                if (response) {
+                    handleFetchedToDos(response);
+                } else {
+                    console.log('There was an error fetching the data');
+                }
+            })
     },[])
         
     const handleShowModal = () => {
@@ -97,14 +93,13 @@ const ToDoTable = () => {
     }, [toDo, showModal]);
     
     const fetchSorted = (newUrl) => {
-        fetch(newUrl)
-        .then(result => result.json())
+        fetchApi(newUrl)
         .then(
-            (result => {
-                const data = result.data;
+            (response => {
+                const data = response.data;
                 setToDos(data);
-                setPrev(result.prev);
-                setNext(result.next);
+                setPrev(response.prev);
+                setNext(response.next);
             })
         )
     }

@@ -6,6 +6,8 @@ import PagesContext from '../context/PagesContext';
 import PrevContext from '../context/PrevContext';
 import ToDosContext from '../context/ToDosContext';
 
+import { fetchApi } from '../ApiCalls';
+
 const ToDoPagination = () => {
     const { next, setNext } = useContext(NextContext);
     const { prev, setPrev } = useContext(PrevContext);
@@ -14,8 +16,7 @@ const ToDoPagination = () => {
     const { currentPage, setCurrentPage } = useContext(CurrentPageContext);
 
     const fetchPage = (url) => {
-        fetch(url)
-        .then(response => response.json())
+        fetchApi(url)
         .then(
             ((response) => {
                 if (response.status === 200) {

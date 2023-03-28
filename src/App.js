@@ -62,7 +62,7 @@ const App = () => {
         <CurrentPageContext.Provider value={currentPageValue}>
         <PagesContext.Provider value={pagesValue}>
         <DoneClickContext.Provider value={doneClickValue}>
-          <ButtonsContext.Provider value={buttonsValue}>
+        <ButtonsContext.Provider value={buttonsValue}>
           <>
             <ToDoSearchForm />
           </>        

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { getMetrics } from "../ApiCalls";
 import DoneClickContext from "../context/DoneClickContext";
 import '../css/Metrics.css';
 
@@ -10,11 +11,10 @@ const ToDoMetrics = () => {
     const { doneClick } = useContext(DoneClickContext);
    
     const fetchMetrics = () => {
-        fetch('/todos/metrics')
-        .then((result) => result.json())
-        .then((result) => {
-            if(result.status === 200) {
-                const data = result.data;
+        getMetrics()
+        .then((response) => {
+            if(response.status === 200) {
+                const data = response.data;
                 const averageAll = data.averageAll;
                 const averageHigh = data.averageHigh;
                 const averageMedium = data.averageMedium;

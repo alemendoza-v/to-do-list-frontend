@@ -3,6 +3,7 @@ import ReactDatePicker from 'react-datepicker';
 import '../css/Form.css';
 import "react-datepicker/dist/react-datepicker.css";
 import ToDoContext from '../context/ToDoContext';
+import { updateToDo } from '../ApiCalls';
 
 const ToDoUpdateForm = (props) => {
     const { toDo } = useContext(ToDoContext);
@@ -45,13 +46,7 @@ const ToDoUpdateForm = (props) => {
             alert('Name must not be empty')
             return;
         }
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(form)
-        };
-        fetch(`/todos/${toDo.id}`, requestOptions)
-        .then(response => response.json())
+        updateToDo(toDo.id, form)
         .then((response) => {
             if(response.status === 400) {
                 alert(response.data);

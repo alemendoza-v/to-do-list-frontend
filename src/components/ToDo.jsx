@@ -3,6 +3,7 @@ import ToDoContext from "../context/ToDoContext";
 import ToDoCheckbox from "./ToDoCheckbox";
 
 import '../css/Table.css';
+import { deleteToDo } from "../ApiCalls";
 
 const ToDo = (props) => {
     const { setToDo } = useContext(ToDoContext);
@@ -58,13 +59,9 @@ const ToDo = (props) => {
     
     const handleDelete = (event) => {
         if(event) {
-            const requestOptions = {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-            };
-            fetch(`/todos/${props.toDo.id}`, requestOptions)
+            deleteToDo(props.toDo.id)
             .then(response => {
-                if (response.ok) {
+                if (response) {
                     window.location.reload(false);
                 } else {
                     alert('There was an error deleting the to-do');
