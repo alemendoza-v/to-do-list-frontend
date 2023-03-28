@@ -290,4 +290,100 @@ describe('Application', () => {
     });
   });
 
+  it('should render table with an updated to-do when a to-do is updated', async () => {
+    const { location } = window;
+    delete window.location;
+    window.location = { reload: jest.fn() };
+
+    api.getMetrics.mockResolvedValue({
+      "data": {
+          "averageMedium": null,
+          "averageHigh": null,
+          "averageAll": null,
+          "averageLow": null
+      },
+      "status": 200
+    });
+
+    api.fetchAllToDos = jest.fn()
+      .mockResolvedValueOnce({
+        'toDos': [{
+            text: "Work on frontend",
+            priority: 1,
+            dueDate: null,
+            id: "2303c08e-50cf-4d89-a67c-5586f9eddedc",
+            isDone: false,
+            doneDate: null,
+            createdAt: "2023-03-27T11:27:59.525399"
+        }],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+      .mockResolvedValueOnce({
+        'toDos': [{
+          text: "Work on frontend",
+          priority: 3,
+          dueDate: null,
+          id: "2303c08e-50cf-4d89-a67c-5586f9eddedc",
+          isDone: false,
+          doneDate: null,
+          createdAt: "2023-03-27T11:27:59.525399"
+        }],
+        'prev': null,
+        'next': null,
+        'pages': 1
+      })
+
+    render(<App/>);
+
+    await waitFor(() => {
+      expect(screen.getByText('Work on frontend')).toBeInTheDocument();
+    });
+
+    act(() => {
+      const updateButton = screen.getByRole('button', {name: 'Update'});
+      fireEvent.click(updateButton);
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('Update To-do')).toBeInTheDocument();
+    })
+    
+    act(() => {
+      const priorityOptionBox = screen.getByRole('combobox', {name: 'update-priority'});
+  
+      userEvent.selectOptions(priorityOptionBox, "High");
+    })
+
+    api.updateToDo.mockResolvedValue({
+      data: {
+        text: "Work on frontend",
+        priority: 3,
+        dueDate: null,
+        id: "2303c08e-50cf-4d89-a67c-5586f9eddedc",
+        isDone: false,
+        doneDate: null,
+        createdAt: "2023-03-27T11:27:59.525399"
+      },
+      status: 200
+    });
+
+    const updateButton = screen.getByRole('button', {name: 'update-button'});
+
+    fireEvent.click(updateButton);
+
+    //Render again to simulate a page reload
+    render(<App/>)
+
+    const options = screen.getAllByRole('option');
+
+    await waitFor(() => {
+      expect(screen.getByText('Work on frontend')).toBeInTheDocument();
+      expect(options[0].selected).toBeTruthy();
+      expect(options[1].selected).toBeFalsy();
+      expect(options[2].selected).toBeFalsy();
+    });
+  });
+
 });

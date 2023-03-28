@@ -74,6 +74,7 @@ const ToDoUpdateForm = (props) => {
                     </div>
                     <div className="create-form-input">
                         <select 
+                            aria-label="update-priority"
                             className="create-priority-form-input"
                             name="priority" 
                             onChange={handleInputChange}
@@ -93,7 +94,7 @@ const ToDoUpdateForm = (props) => {
                         <ReactDatePicker selected={startDate} onChange={(date) => handleDateChange(date)}/>
                     </div>
                 </div>
-                <input className="create-btn" type="submit" value="Update"></input>
+                <input aria-label="update-button" className="create-btn" type="submit" value="Update"></input>
             </form>           
         </>
     )
